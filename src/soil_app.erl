@@ -21,7 +21,11 @@ start(_StartType, _StartArgs) ->
   ensure_started(public_key),
   ensure_started(ssl),
   ensure_started(gun),
-  
+ 
+  %% 
+  ensure_started(gproc),
+
+ 
   PrivDir = soil_utls:priv_dir(),
 
   Dispatch = cowboy_router:compile([
