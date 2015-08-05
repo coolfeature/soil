@@ -26,6 +26,7 @@
 %%
 
 init(_Transport, Req, _Opts, _Active) ->
+  io:fwrite("Web Socket init ~n",[]),
   {ok, Req, #state{sid=undefined}}.
 
 stream(Data, Req, #state{sid=Sid}=State) ->  
@@ -44,6 +45,7 @@ terminate(_Req,#state{sid=_Sid}=_State) ->
 %%
 
 send(Sid,Msg) ->
+  io:fwrite("Web Socket stream ~p ~n",[Msg]),
   gproc:send(Sid,Msg).
 
 

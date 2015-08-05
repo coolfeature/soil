@@ -25,6 +25,11 @@ start(_StartType, _StartArgs) ->
   %% 
   ensure_started(gproc),
 
+  %%
+  ensure_started(syntax_tools),
+  ensure_started(compiler),
+  ensure_started(merl),
+  ensure_started(erlydtl),
  
   PrivDir = soil_utls:priv_dir(),
 
@@ -53,8 +58,7 @@ start(_StartType, _StartArgs) ->
     [{env, [{dispatch, Dispatch}]}]
   ),
 
-  R = soil_sup:start_link(),
-  R.
+  soil_sup:start_link().
 
 stop(_State) ->
   ok.
