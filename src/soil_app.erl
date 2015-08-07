@@ -22,17 +22,16 @@ start(_StartType, _StartArgs) ->
   ensure_started(ssl),
   ensure_started(gun),
  
-  %% 
+  %% Gproc
   ensure_started(gproc),
 
-  %%
+  %% Erlydtl dependencies
   ensure_started(syntax_tools),
   ensure_started(compiler),
   ensure_started(merl),
   ensure_started(erlydtl),
  
   PrivDir = soil_utls:priv_dir(),
-
   Dispatch = cowboy_router:compile([
     {'_', [
       {"/static/[...]", cowboy_static, {dir,PrivDir ++ "/static",[{mimetypes, cow_mimetypes, all}]}}
@@ -41,14 +40,11 @@ start(_StartType, _StartArgs) ->
       ,{"/bullet/[...]",bullet_handler,[{handler,soil_bullet_handler}]}
     ]}
   ]),
-
   cowboy:start_http(http_listener, 100,
     [{port, soil_utls:get_env(http_port)}],
     [{env, [{dispatch, Dispatch}]}]
   ),
-
   io:fwrite("Priv dir: ~p~n",[PrivDir]),
-
   cowboy:start_https(https_listener, 100,
     [{port, soil_utls:get_env(https_port)}
      ,{cacertfile, PrivDir ++ "/ssl/ca.soil.in.crt"}
@@ -57,7 +53,7 @@ start(_StartType, _StartArgs) ->
     ],
     [{env, [{dispatch, Dispatch}]}]
   ),
-
+  soil_db:init(),
   soil_sup:start_link().
 
 stop(_State) ->

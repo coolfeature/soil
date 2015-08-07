@@ -26,18 +26,14 @@ content_types_provided(Req, State) ->
   ], Req, State}.
 
 to_html(Req, State) ->
+  Sid = soil_utls:random(),
+  ClientTimeout = 5000,
+  Req1 = soil_session:set_cookie(Req,<<"SID">>,Sid),
+  Req2 = soil_session:set_cookie(Req1,<<"clientTimeout">>,integer_to_binary(ClientTimeout)),
   Template = soil_utls:priv_dir() ++ "/app/templates/index.tpl",
   {ok,_Module} = erlydtl:compile_file(Template,index_dtl),
-  Sid = 123,
-  Host = "dev-esb-2",
-  ClientTimeout = 5000,
-  {ok,Body} = index_dtl:render([
-    {sid,Sid}
-    ,{hostname,Host}
-    ,{client_timeout,ClientTimeout}
-    ,{authenticated,false}
-  ]),
-  {Body, Req, State}.
+  {ok,Body} = index_dtl:render([]),
+  {Body, Req2, State}.
 
 to_json(Req, State) ->
   Body = <<"{\"rest\": \"Hello World!\"}">>,

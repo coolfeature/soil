@@ -1,9 +1,11 @@
 <html ng-app="Soil">
 <head>
   <script src="/static/libs/angular-1.2.26/angular.min.js"></script>
+  <script src="/static/libs/angular-cookies-1.2.26/angular-cookies.min.js"></script>
   <script src="/static/libs/jquery-1.11.1/jquery.min.js"></script>
   <script src="/static/libs/bootstrap-3.2.0/bootstrap.min.js"></script>
   <script src="/static/libs/bullet-1.0.0/bullet.js"></script>
+  <script src="/static/libs/bert-js-1.0.0/bert.js"></script>
 
   <link href="/static/css/bootstrap-3.2.0/bootstrap.min.css" rel="stylesheet">
   <link href="/static/css/soil-0.0.1/soil.css" rel="stylesheet">
@@ -31,11 +33,21 @@
           </div>
 
           <div class="inner cover">
-            <h1 class="cover-heading">Cover your page.</h1>
-            <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
-            <p class="lead">
-              <a href="#" class="btn btn-lg btn-default">Learn more</a>
-            </p>
+            <h1 class="cover-heading">Server connections</h1>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="channel in channels">
+                  <td>{{ channel.id }}</td>
+                  <td>{{ channel.type }}</td>
+                </tr>
+              </tbody>
+            </table>  
           </div>
 
           <div class="mastfoot">
@@ -50,11 +62,6 @@
 
     </div>
 
-  <!-- -->
-  <div style="color:sienna">{{ sid }}</div>
-  <div ng-model="sid" id="session_id" style="display:none">{{ sid }}</div>
-  <div id="hostname" style="display:none">{{ hostname }}</div>
-  <div id="client_timeout" style="display:none">{{ client_timeout }}</div>
 </body>
 </html>
 

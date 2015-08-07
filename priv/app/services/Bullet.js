@@ -1,16 +1,13 @@
 module = angular.module('soil.services.Bullet',[]);
 
-module.factory('BulletService', ['$q','$timeout','$rootScope',
-  function($q,$timeout,$rootScope) {  
+module.factory('BulletService', ['$q','$cookies','$timeout','$rootScope',
+  function($q,$cookies,$timeout,$rootScope) {  
 
   var Service = { promise: null, cid : 0 };
 
-  var sid = document.getElementById('session_id');
-  var hostname = document.getElementById('hostname');
-  var clientTimeout = document.getElementById('client_timeout').textContent;
-  var clientTimeout = parseInt(clientTimeout);
-
-  var url = "wss:" + '//' + hostname.textContent + ':8443/bullet/' + sid.textContent;
+  var clientTimeout = $cookies.clientTimeout;
+  var sid = $cookies.SID;
+  var url = "wss:" + '//' + window.location.hostname + ':8443/bullet/' + sid;
   console.log("Bullet URL: ",url);
   var options = { 'disableEventSource': true, 'disableXHRPolling' : true};
 

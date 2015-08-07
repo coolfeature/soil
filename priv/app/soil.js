@@ -1,5 +1,6 @@
 var app = angular.module('Soil', [
-  'soil.services.Bullet'
+  'ngCookies'
+  ,'soil.services.Bullet'
   ,'soil.controllers.Main'
 ]);
 

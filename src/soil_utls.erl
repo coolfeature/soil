@@ -9,9 +9,16 @@
   
   ,get_env/1
   ,get_env/2
+  
+  ,random/0
 ]).
 
-
+random() ->
+  {N1,N2,N3} = erlang:now(),
+  N1b = integer_to_binary(N1),
+  N2b = integer_to_binary(N2),
+  N3b = integer_to_binary(N3),
+  <<N1b/binary,N2b/binary,N3b/binary>>.
 
 root_dir() ->
   {ok,Path} = file:get_cwd(),
