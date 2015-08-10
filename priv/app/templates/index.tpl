@@ -39,12 +39,20 @@
                 <tr>
                   <th>Id</th>
                   <th>Type</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
+                <tr>
+                  <td>123</td>
+                  <td>Dummy</td>
+                  <td><a class="btn btn-large btn-success" ng-click="send()">Send</a></td>
+                </tr>
+
                 <tr ng-repeat="channel in channels">
                   <td>{{ channel.id }}</td>
                   <td>{{ channel.type }}</td>
+                  <td><a class="btn btn-large btn-success" ng-click="send()">Send</a></td>
                 </tr>
               </tbody>
             </table>  

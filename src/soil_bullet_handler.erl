@@ -26,8 +26,8 @@
 %%
 
 init(_Transport, Req, _Opts, _Active) ->
-  io:fwrite("Web Socket init ~n",[]),
-  {ok, Req, #state{sid=undefined}}.
+  {[Sid],Req1} = cowboy_req:path_info(Req),
+  {ok, Req1, #state{sid=Sid}}.
 
 stream(Data, Req, #state{sid=Sid}=State) ->  
   send(Sid,Data),

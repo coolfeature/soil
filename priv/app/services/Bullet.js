@@ -93,6 +93,9 @@ module.factory('BulletService', ['$q','$cookies','$timeout','$rootScope',
     return currentCallbackId;
   }
 
+  Service.push = function(msg) {
+    bullet.send(Bert.encode(msg));
+  }
   Service.send = function(msg) {
     msg.cbid = null;
     var promise = sendRequest(msg);
