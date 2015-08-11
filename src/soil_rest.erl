@@ -27,6 +27,7 @@ content_types_provided(Req, State) ->
 
 to_html(Req, State) ->
   Sid = soil_utls:random(),
+  io:fwrite("SETTING COOKIE SID: ~p~n",[Sid]),
   ClientTimeout = 5000,
   Req1 = soil_session:set_cookie(Req,<<"SID">>,Sid),
   Req2 = soil_session:set_cookie(Req1,<<"clientTimeout">>,integer_to_binary(ClientTimeout)),

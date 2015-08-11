@@ -1,7 +1,7 @@
 module = angular.module('soil.services.Bullet',[]);
 
-module.factory('BulletService', ['$q','$cookies','$timeout','$rootScope',
-  function($q,$cookies,$timeout,$rootScope) {  
+module.factory('BulletService', ['$q','$cookies','$timeout','$rootScope','NewsService',
+  function($q,$cookies,$timeout,$rootScope,NewsService) {  
 
   var Service = { promise: null, cid : 0 };
 
@@ -9,7 +9,7 @@ module.factory('BulletService', ['$q','$cookies','$timeout','$rootScope',
   var sid = $cookies.SID;
   var url = "wss:" + '//' + window.location.hostname + ':8443/bullet/' + sid;
   console.log("Bullet URL: ",url);
-  var options = { 'disableEventSource': true, 'disableXHRPolling' : true};
+  var options = { 'disableEventSource': true, 'disableXHRPolling' : true, 'disableWebSocket' : false};
 
   var bullet = $.bullet(url, options);
   var callbacks = {};
@@ -35,7 +35,13 @@ module.factory('BulletService', ['$q','$cookies','$timeout','$rootScope',
 
   bullet.onmessage = function(e){
     if (e.data != 'pong'){
-      listener($.parseJSON(e.data));
+      var json = $.parseJSON(e.data);
+      listener(json);
+      if (json.hasOwnProperty('header')) { 
+        if (json.header.type === "news") {
+          NewsService.news(json);
+        }
+      }
     }
   };
 
@@ -47,12 +53,12 @@ module.factory('BulletService', ['$q','$cookies','$timeout','$rootScope',
     var defer = $q.defer();
     var callbackId = getCallbackId();
     Service.cid = callbackId; 
-    request.cbid = callbackId;
+    request.header.cbid = callbackId;
     var timeoutPromise = $timeout(function(data){
       var timeoutRequest = request;
-      timeoutRequest.cbid = callbackId;
-      timeoutRequest.data.result = "timeout";
-      timeoutRequest.data.msg = "A timeout occurred";
+      timeoutRequest.header.cbid = callbackId;
+      timeoutRequest.header.result = "timeout";
+      timeoutRequest.header.msg = "A timeout occurred";
       console.log('TIMEOUT',timeoutRequest);
       listener(timeoutRequest);
     },clientTimeout);
@@ -75,13 +81,12 @@ module.factory('BulletService', ['$q','$cookies','$timeout','$rootScope',
     bullet.send(JSON.stringify(request));
   }
 
-  function listener(data) {
-    var messageObj = data;
-    if(callbacks.hasOwnProperty(messageObj.cbid)) {
-      var callback = callbacks[messageObj.cbid];
+  function listener(response) {
+    if(callbacks.hasOwnProperty(response.header.cbid)) {
+      var callback = callbacks[response.header.cbid];
       $timeout.cancel(callback.timeoutPromise);
-      $rootScope.$apply(callback.cb.resolve(messageObj));
-      delete callbacks[messageObj.cbid];
+      $rootScope.$apply(callback.cb.resolve(response));
+      delete callbacks[response.header.cbid];
     }
   }
 
@@ -93,11 +98,8 @@ module.factory('BulletService', ['$q','$cookies','$timeout','$rootScope',
     return currentCallbackId;
   }
 
-  Service.push = function(msg) {
-    bullet.send(Bert.encode(msg));
-  }
   Service.send = function(msg) {
-    msg.cbid = null;
+    msg.header.cbid = null;
     var promise = sendRequest(msg);
     Service.promise = promise; 
     return promise;

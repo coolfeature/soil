@@ -1,0 +1,4 @@
+.*
+!tsung.xml
+!start_tsung.sh
+!.gitignore

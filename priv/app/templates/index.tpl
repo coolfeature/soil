@@ -11,6 +11,7 @@
   <link href="/static/css/soil-0.0.1/soil.css" rel="stylesheet">
 
   <script src="/app/controllers/Main.js"></script>
+  <script src="/app/services/News.js"></script>
   <script src="/app/services/Bullet.js"></script>
   <script src="/app/soil.js"></script>
 </head>
@@ -24,34 +25,42 @@
               <h3 class="masthead-brand">Soil</h3>
               <nav>
                 <ul class="nav masthead-nav">
-                  <li class="active"><a href="#">Soil</a></li>
-                  <li><a href="#">Features</a></li>
-                  <li><a href="#">Contact</a></li>
+                  <li ng-class="{ active: toggler.about }">
+                     <a href="#" ng-click="visible('about')">About</a>
+                 </li>
+                  <li ng-class="{ active: toggler.connections }">
+                     <a href="#" ng-click="visible('connections')">Connections</a>
+                  </li>
                 </ul>
               </nav>
             </div>
           </div>
 
-          <div class="inner cover">
+
+          <!-- About -->          
+          <div id="About" class="inner cover" ng-if="toggler.about">
+            <h1 class="cover-heading">Welcome</h1>
+            <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
+          </div>
+
+          <!-- Connections -->          
+          <div id="Connections" class="inner cover" ng-if="toggler.connections">
             <h1 class="cover-heading">Server connections</h1>
+            <p class="lead">
+              <a href="#" ng-click="view()" class="btn btn-lg btn-default">View</a>
+            </p> 
             <table class="table">
               <thead>
                 <tr>
-                  <th>Id</th>
-                  <th>Type</th>
+                  <th>Sid</th>
+                  <th>Active</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>123</td>
-                  <td>Dummy</td>
-                  <td><a class="btn btn-large btn-success" ng-click="send()">Send</a></td>
-                </tr>
-
                 <tr ng-repeat="channel in channels">
-                  <td>{{ channel.id }}</td>
-                  <td>{{ channel.type }}</td>
+                  <td>{[ channel.sid ]}</td>
+                  <td>{[ channel.properties.active ]}</td>
                   <td><a class="btn btn-large btn-success" ng-click="send()">Send</a></td>
                 </tr>
               </tbody>
