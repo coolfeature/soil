@@ -88,7 +88,7 @@
     <!-- Benchmark -->          
     <div id="Benchmark" ng-if="toggler.benchmark">
       <div class="row">
-        <div class="embed-responsive embed-responsive-16by9">
+        <div class="embed-responsive embed-responsive-4by3">
           <iframe class="embed-responsive-item" ng-src="{[ tsungReport ]}"></iframe> 
         </div>
       </div>

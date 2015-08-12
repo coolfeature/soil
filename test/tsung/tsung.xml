@@ -1,19 +1,20 @@
 <?xml version="1.0"?>
 <!DOCTYPE tsung SYSTEM "/usr/share/tsung/tsung-1.0.dtd" [] >
 <tsung loglevel="notice" version="1.0">
+  <!-- client limit is set with maxusers="1000000" -->
   <clients>
-    <client host="localhost" use_controller_vm="true" maxusers="1000" />
+    <client host="dev-esb-2" use_controller_vm="false" maxusers="1000000" />
   </clients>
 
   <servers>
-    <server host="localhost" port="8080" type="tcp" />
+    <server host="dev-esb-2" port="8080" type="tcp" />
   </servers>
 
   <load>
     <!-- During the first minute -->
     <arrivalphase phase="1" duration="1" unit="minute">
       <!-- simulate arrival of 100 users every second -->
-      <users interarrival="0.01" unit="second" />
+      <users interarrival="0.001" unit="second" />
     </arrivalphase>
   </load>
 
@@ -22,7 +23,7 @@
       <request subst="true">
         <websocket type="connect" path="/bullet/%%ts_user_server:get_unique_id%%"></websocket>
       </request>
-      <thinktime value="10"></thinktime>
+      <thinktime value="60"></thinktime>
       <request>
         <websocket type="close"></websocket>
       </request>
