@@ -3,10 +3,12 @@ var module = angular.module('soil.controllers.Main', []);
 module.controller('MainController',['$scope','BulletService','NewsService',function($scope,BulletService,NewsService) {
 
   $scope.channels = [];
-
+  $scope.tsungReport = document.location.origin + "/static/tsung_report/report.html";
+  console.log("asdf ",$scope.tsungReport);
   $scope.toggler = {
-    'about':true
+    'home':true
     ,'connections':false
+    ,'benchmark':false
   };
 
   $scope.visible = function(view) {
@@ -21,6 +23,9 @@ module.controller('MainController',['$scope','BulletService','NewsService',funct
         }
       }
     }
+    if ($scope.toggler.connections) {
+      $scope.view();
+    }
   };
 
   $scope.$watch(function() {return NewsService},function() {
@@ -33,8 +38,6 @@ module.controller('MainController',['$scope','BulletService','NewsService',funct
     var promise = BulletService.send({ header: { action: "view"} , body : {} });
     promise.then(function(response){
       $scope.channels = response.body;
-      console.log("RESPONSE: ",$scope.channels[0].sid);
-      console.log("RESPONSE: ",$scope.channels[0].properties.active);
     });
   }
 

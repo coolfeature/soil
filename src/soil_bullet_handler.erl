@@ -88,13 +88,11 @@ dispatch(undefined,JsonMap) ->
 
 sessions() ->
   List = gproc:select([{{'_', '_', '_'},[],['$$']}]),
-  Sessions = lists:foldl(fun(Elem,Acc) ->
+  lists:foldl(fun(Elem,Acc) ->
     [Key,_Pid1,_Pid2] = Elem,
     {_,_,Sid} = Key,
-    Acc ++ [{sid,Sid},{properties,gproc:get_attribute(Key,map)}]
-    %maps:put(Sid,gproc:get_attribute(Key,map),Acc)
-  end,[],List),
-  [Sessions].
+    Acc ++ [[{sid,Sid},{properties,gproc:get_attribute(Key,map)}]]
+  end,[],List).
 
 get_cbid(JsonMap) ->
   HeaderMap = maps:get(<<"header">>,JsonMap,#{}),

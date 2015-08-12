@@ -1,23 +1,30 @@
 <?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/share/tsung/tsung-1.0.dtd" [] >
 <tsung loglevel="notice" version="1.0">
   <clients>
     <client host="localhost" use_controller_vm="true" maxusers="1000" />
   </clients>
 
   <servers>
-    <server host="localhost" port="8443" type="ssl" />
+    <server host="localhost" port="8080" type="tcp" />
   </servers>
 
   <load>
-    <arrivalphase phase="1" duration="10" unit="second">
-      <users maxnumber="1" arrivalrate="5" unit="second" />
+    <!-- During the first minute -->
+    <arrivalphase phase="1" duration="1" unit="minute">
+      <!-- simulate arrival of 100 users every second -->
+      <users interarrival="0.01" unit="second" />
     </arrivalphase>
   </load>
 
   <sessions>
-    <session name="get_index" weight="1" type="ts_https">
+    <session name="get_index" weight="1" type="ts_websocket">
+      <request subst="true">
+        <websocket type="connect" path="/bullet/%%ts_user_server:get_unique_id%%"></websocket>
+      </request>
+      <thinktime value="10"></thinktime>
       <request>
-         <https url="/" method="GET"></https>
+        <websocket type="close"></websocket>
       </request>
     </session>
   </sessions>

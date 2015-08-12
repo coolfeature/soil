@@ -3,15 +3,25 @@ module = angular.module('soil.services.Bullet',[]);
 module.factory('BulletService', ['$q','$cookies','$timeout','$rootScope','NewsService',
   function($q,$cookies,$timeout,$rootScope,NewsService) {  
 
-  var Service = { promise: null, cid : 0 };
+  var Service = { url : "", promise: null, cid : 0 };
 
   var clientTimeout = $cookies.clientTimeout;
   var sid = $cookies.SID;
-  var url = "wss:" + '//' + window.location.hostname + ':8443/bullet/' + sid;
-  console.log("Bullet URL: ",url);
+
+  var port = "8443";
+  var protocol = window.location.protocol;
+  if (protocol === "http:") {
+    protocol = "ws:"
+    port = "8080";
+  } else {
+    protocol = "wss:"
+  }
+  Service.url = protocol + '//' + window.location.hostname + ':' + port + '/bullet/' + sid;
+  console.log("Bullet URL: ", Service.url);
+
   var options = { 'disableEventSource': true, 'disableXHRPolling' : true, 'disableWebSocket' : false};
 
-  var bullet = $.bullet(url, options);
+  var bullet = $.bullet(Service.url, options);
   var callbacks = {};
   var currentCallbackId = 0;
 
