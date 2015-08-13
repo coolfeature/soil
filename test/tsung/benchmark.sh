@@ -24,3 +24,9 @@ tsung -f tsung.xml start
 mkdir $REPORT_DIR
 cd $REPORT_DIR
 /usr/lib/tsung/bin/tsung_stats.pl --stats $LOG_DIR/tsung.log
+
+# Make sure the browser does not cache the report pages
+cd -
+sed -i.bak 's/<head>/<head><meta http-equiv="cache-control" content="max-age=0" \/><meta http-equiv="cache-control" content="no-cache" \/><meta http-equiv="pragma" content="no-cache" \/><meta http-equiv="expires" content="0" \/><meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" \/>/' $REPORT_DIR/report.html
+
+sed -i.bak 's/<head>/<head><meta http-equiv="cache-control" content="max-age=0" \/><meta http-equiv="cache-control" content="no-cache" \/><meta http-equiv="pragma" content="no-cache" \/><meta http-equiv="expires" content="0" \/><meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" \/>/' $REPORT_DIR/graph.html

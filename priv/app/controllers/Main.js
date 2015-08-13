@@ -3,7 +3,7 @@ var module = angular.module('soil.controllers.Main', []);
 module.controller('MainController',['$scope','BulletService','NewsService',function($scope,BulletService,NewsService) {
 
   $scope.channels = [];
-  $scope.tsungReport = document.location.origin + "/static/tsung_report/report.html";
+  $scope.tsungReport = document.location.origin + "/static/tsung_report/report.html?dummyVar="+ (new Date()).getTime();
   console.log("asdf ",$scope.tsungReport);
   $scope.toggler = {
     'home':true

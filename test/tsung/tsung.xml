@@ -1,9 +1,8 @@
 <?xml version="1.0"?>
 <!DOCTYPE tsung SYSTEM "/usr/share/tsung/tsung-1.0.dtd" [] >
 <tsung loglevel="notice" version="1.0">
-  <!-- client limit is set with maxusers="1000000" -->
   <clients>
-    <client host="dev-esb-2" use_controller_vm="false" maxusers="1000000" />
+    <client host="dev-esb-2" use_controller_vm="false" maxusers="6000" />
   </clients>
 
   <servers>
@@ -14,7 +13,7 @@
     <!-- During the first minute -->
     <arrivalphase phase="1" duration="1" unit="minute">
       <!-- simulate arrival of 100 users every second -->
-      <users interarrival="0.001" unit="second" />
+      <users interarrival="0.01" unit="second" />
     </arrivalphase>
   </load>
 
