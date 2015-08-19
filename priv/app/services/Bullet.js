@@ -7,7 +7,12 @@ module.factory('BulletService', ['$q','$cookies','$timeout','$rootScope','NewsSe
 
   var clientTimeout = $cookies.clientTimeout;
   var sid = $cookies.SID;
-
+  var tsid = $cookies.TSID;
+  if (sid == undefined) {
+    console.log("SETTING SID",tsid);
+    $cookies.SID = tsid;
+    sid = tsid;
+  } 
   var port = "8443";
   var protocol = window.location.protocol;
   if (protocol === "http:") {

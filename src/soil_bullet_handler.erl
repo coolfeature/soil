@@ -35,20 +35,25 @@ init(_Transport, Req, _Opts, Active) ->
   case gproc:where(?GPROC_KEY(Sid)) of
     undefined ->
       io:fwrite("Sid ~p undefined -> REGISTERING ~n",[Sid]),
-      gproc:reg(?GPROC_KEY(Sid),self(),[{map,#{ active => Active }}]);
+      %% Register a name or property for the current process
+      gproc:reg(?GPROC_KEY(Sid),self(),[{map,#{ active => Active }}]); 
     Pid -> 
       if Pid =:= self() -> 
         io:fwrite("Registered Pid the same as self() -> OK ~n",[]),
         ok; 
       true -> 
         io:fwrite("Registered Pid different from self() -> REGISTERING ~n",[]),
-        gproc:reg(?GPROC_KEY(Sid),self()) 
+        io:fwrite("RUNNING PROCESS:: ~p~n",[erlang:process_info(Pid)]),
+        %% give_away/2 fails with badarg as self() is not registered
+        %% with ?GPROC_KEY(Sid)
+        %% gproc:give_away(?GPROC_KEY(Sid),self())
+        gproc:reg(?GPROC_KEY(Sid),self(),[{map,#{ active => Active }}])
       end
   end,
   {ok, Req1, #state{ sid = Sid }}.
 
 stream(Data, Req, #state{sid=_Sid}=State) ->  
-  JsonMap = jsx:decode(Data,[return_maps]),
+  JsonMap = jsx:decode(Data,[{labels,atom},return_maps]),
   io:fwrite("Web Socket stream ~p ~n",[JsonMap]),
   HeaderMap = maps:get(<<"header">>,JsonMap,#{}),
   Action = maps:get(<<"action">>,HeaderMap,undefined), 
@@ -74,6 +79,7 @@ terminate(_Req,#state{sid=Sid}=_State) ->
 
 %% ------------------------------------------------------------------
 %% @private API
+
 dispatch(<<"view">>,JsonMap) ->
   % Let the client know there is a new conection
   self() ! #{ 
@@ -83,6 +89,7 @@ dispatch(<<"view">>,JsonMap) ->
 dispatch(undefined,JsonMap) ->
   io:fwrite("UNDEFINED ACTION: ~p~n",[JsonMap]),
   ok.
+
 %% ------------------------------------------------------------------
 %% @private API
 

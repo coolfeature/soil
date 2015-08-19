@@ -27,9 +27,8 @@ content_types_provided(Req, State) ->
 
 to_html(Req, State) ->
   Sid = soil_utls:random(),
-  io:fwrite("SETTING COOKIE SID: ~p~n",[Sid]),
   ClientTimeout = 5000,
-  Req1 = soil_session:set_cookie(Req,<<"SID">>,Sid),
+  Req1 = soil_session:set_cookie(Req,<<"TSID">>,Sid),
   Req2 = soil_session:set_cookie(Req1,<<"clientTimeout">>,integer_to_binary(ClientTimeout)),
   Template = soil_utls:priv_dir() ++ "/app/templates/index.tpl",
   {ok,_Module} = erlydtl:compile_file(Template,index_dtl),

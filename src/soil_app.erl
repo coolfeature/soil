@@ -33,7 +33,6 @@ start(_StartType, _StartArgs) ->
 
   %% Norm
   ensure_started(norm),
-
    
   PrivDir = soil_utls:priv_dir(),
   Dispatch = cowboy_router:compile([
@@ -57,7 +56,6 @@ start(_StartType, _StartArgs) ->
     ],
     [{env, [{dispatch, Dispatch}]}]
   ),
-  soil_db:init(),
   soil_sup:start_link().
 
 stop(_State) ->
