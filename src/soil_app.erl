@@ -30,7 +30,11 @@ start(_StartType, _StartArgs) ->
   ensure_started(compiler),
   ensure_started(merl),
   ensure_started(erlydtl),
- 
+
+  %% Norm
+  ensure_started(norm),
+
+   
   PrivDir = soil_utls:priv_dir(),
   Dispatch = cowboy_router:compile([
     {'_', [

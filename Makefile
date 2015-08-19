@@ -1,12 +1,11 @@
 REBAR = ./rebar
-RECORDS_PATH = $(pwd)/include
 
 .PHONY: all compile test clean get-deps build-plt dialyze
 
 all: compile
 
 compile:
-	export RECORDS_PATH=$(CURDIR)/include; $(REBAR) compile
+	$(REBAR) compile
 
 test: compile
 	@$(REBAR) eunit skip_deps=true
