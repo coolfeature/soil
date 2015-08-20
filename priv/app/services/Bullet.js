@@ -40,7 +40,7 @@ module.factory('BulletService', ['$q','$cookies','$timeout','$rootScope','NewsSe
       fireBullet(scheduledQueue[i]);
       scheduledQueue.splice(i,1);
     }
-    console.log("CONNECTION OPENED: ",bullet);
+    //console.log("CONNECTION OPENED: ",bullet);
   };
 
   bullet.onclose = bullet.ondisconnect = function(){
@@ -61,7 +61,7 @@ module.factory('BulletService', ['$q','$cookies','$timeout','$rootScope','NewsSe
   };
 
   bullet.onheartbeat = function(){
-    console.log('HEARTBEAT');
+    //console.log('HEARTBEAT');
   };
 
   function sendRequest(request) {
@@ -74,7 +74,6 @@ module.factory('BulletService', ['$q','$cookies','$timeout','$rootScope','NewsSe
       timeoutRequest.header.cbid = callbackId;
       timeoutRequest.header.result = "timeout";
       timeoutRequest.header.msg = "A timeout occurred";
-      console.log('TIMEOUT',timeoutRequest);
       listener(timeoutRequest);
     },clientTimeout);
 

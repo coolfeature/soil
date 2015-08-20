@@ -4,10 +4,10 @@ module.controller('MainController',['$scope','BulletService','NewsService',funct
 
   $scope.channels = [];
   $scope.tsungReport = document.location.origin + "/static/tsung_report/report.html?dummyVar="+ (new Date()).getTime();
-  console.log("asdf ",$scope.tsungReport);
   $scope.toggler = {
     'home':true
     ,'connections':false
+    ,'register':false
     ,'benchmark':false
   };
 
