@@ -83,15 +83,13 @@ module.controller('RegisterController', ['$scope','$timeout','BulletService', 'F
   $scope.submit = function () {
     if ($scope.signUpForm.$valid) {
       var requestNewUser = $scope.newUser;
-      requestNewUser['__meta__'] = {'type' : "user"} ;
       var requestNewAddress = $scope.newAddress;
-      requestNewAddress['__meta__'] = {'type' : "address"}; 
       var requestNewCustomer = $scope.newShopper;
-      requestNewCustomer['__meta__'] = {'type' : "customer"}; 
-      var request = { header : { action : 'register' } , body : [requestNewUser,requestNewAddress,requestNewCustomer] };
+      var request = { header : { action : 'register' }, 
+        body : { user : requestNewUser, address : requestNewAddress, customer : requestNewCustomer } };
       console.log("REQUEST IS:",request);
       var promise = BulletService.send(request);
-      $scope.newUser = {'gender': "f"};
+      $scope.newCustomer = {'gender': "f"};
       $scope.signUpForm.$setPristine(); 
       promise.then(function(response) {
         if(response.header.result === "timeout") {

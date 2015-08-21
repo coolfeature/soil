@@ -22,9 +22,9 @@ init(_Transport, Req, _Opts, Active) ->
   {ok, Req1, #state{ sid = Sid }}.
 
 stream(Data, Req, #state{sid=Sid}=State) ->  
-  JsonMap = jsx:decode(Data,[{labels,atom},return_maps]),
-  HeaderMap = maps:get(header,JsonMap,#{}),
-  Action = maps:get(action,HeaderMap,undefined), 
+  JsonMap = jsx:decode(Data,[return_maps]),
+  HeaderMap = maps:get(<<"header">>,JsonMap,#{}),
+  Action = maps:get(<<"action">>,HeaderMap,undefined), 
   soil:handle(Action,JsonMap,?GPROC_KEY(Sid)),
   {ok, Req, State}.
 
