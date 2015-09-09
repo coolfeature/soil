@@ -67,7 +67,7 @@
     <!-- Home -->          
     <div id="Home" ng-if="toggler.home">
       <h1 class="cover-heading">Welcome</h1>
-      <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
+      <p class="lead">Soil is an example web application running on a highly scalable and resilient Erlang platform with a rich and interactive front end written in AngularJS which communicates with the application server over a bi-directional channel.</p>
     </div>
 
     <!-- Connections -->          
@@ -86,7 +86,9 @@
             <tr ng-repeat="channel in channels">
               <td>{[ channel.sid ]}</td>
               <td>{[ channel.properties.active ]}</td>
-              <td><a class="btn btn-large btn-success" ng-click="send()">Send</a></td>
+              <td>
+                <!--<a class="btn btn-large btn-success" ng-click="send()">Send</a>-->
+              </td>
             </tr>
           </tbody>
         </table>  
